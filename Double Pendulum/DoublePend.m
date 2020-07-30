@@ -14,5 +14,5 @@ plot(t, x(:,1),t, x(:,2),t, x(:,3),t, x(:,4));
 title('Pendulum Data');
 xlabel('Time (seconds)');
 legend("Angle1", "Angle2", "Omega1", "Omega2");
-legend('Location','southeast');
+legend('Location','northwest');
 grid on;
