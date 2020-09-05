@@ -3,11 +3,25 @@
 %standardAtmosphere.m
 %Authors <Corey O'Brien (obrie187)>
 
-Astart = 0;     %start altitude (km)
-Astop = 31;      %stop altitude (km)
-Astep = Astop / .25;    %number of altitude increments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Constants and Definitions
+
+Astart = 0;                 %start altitude (km)
+Astop = 31;                 %stop altitude (km)
+Astep = Astop / .25;        %number of altitude increments
+
 altitudes = linspace(Astart,Astop,Astep); %generate list of altitudes
-temperatures = zeros(1,Astep);
+
+temperatures = zeros(1,Astep);     %generate lists for t,p,rho,s       
+pressures = zeros(1,Astep);
+densities = zeros(1,Astep);
+speedsofsound = zeros(1,Astep);
+
+R = .286;       %kj/kg/k
+Gamma = 1.4;    %Dimensionless,
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 for x = (1:Astep)
     
@@ -41,14 +55,23 @@ for x = (1:Astep)
     end
     
     temperatures(x) = temperature;
+    speedsofsound(x) = sqrt((Gamma * R * temperature) * 1000);
+    
+    
         
 end
 
-
-hold on
+figure();
 figure(1);
 plot(temperatures,altitudes,'r');
 title('Temperature Distribution in the Standard Atmosphere');
 xlabel('Altitude (Km)');
 ylabel('Temperature (k)');
-grid on;
+
+figure();
+figure(2);
+plot(altitudes,speedsofsound,'g');
+title('Altitude Vs. Speed of Sound');
+xlabel('Altitude (Km)');
+ylabel('Speed of Sound (m/s)');
+
