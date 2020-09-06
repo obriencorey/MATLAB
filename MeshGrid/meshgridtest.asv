@@ -1,6 +1,0 @@
-x = -4:0.25:4;
-y = x;
-[X,Y] = meshgrid(x);
-
-F = X.*sin(-X.^2-Y.^2);
-surf(X,Y,F)
