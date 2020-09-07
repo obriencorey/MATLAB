@@ -1,0 +1,399 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>standardAtmosphere</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-09-06"><meta name="DC.source" content="standardAtmosphere.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%AAE 251 Fall 2020</span>
+<span class="comment">%Homework &lt;Homework 1&gt;</span>
+<span class="comment">%standardAtmosphere.m</span>
+<span class="comment">%Authors &lt;Corey O'Brien (obrie187)&gt;</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% Constants and Definitions</span>
+
+Astart = 0;                 <span class="comment">%start altitude (km)</span>
+Astop = 31;                 <span class="comment">%stop altitude (km)</span>
+Astep = Astop / .25;        <span class="comment">%number of altitude increments</span>
+
+altitudes = linspace(Astart,Astop,Astep); <span class="comment">%generate list of altitudes</span>
+
+temperatures = zeros(1,Astep);     <span class="comment">%generate lists for t,p,rho,s</span>
+pressures = zeros(1,Astep);
+densities = zeros(1,Astep);
+speedsofsound = zeros(1,Astep);
+
+Etemperatures = zeros(1,Astep);     <span class="comment">%generate lists for engineering units</span>
+Epressures = zeros(1,Astep);
+Edensities = zeros(1,Astep);
+Espeedsofsound = zeros(1,Astep);
+Ealtitudes = zeros(1,Astep);
+Ialtitudes = zeros(1,Astep);            <span class="comment">%Needed for SI unit of length</span>
+
+R = .286;       <span class="comment">%kj/kg/k</span>
+Gamma = 1.4;    <span class="comment">%Dimensionless,</span>
+G = 9.81;        <span class="comment">%m/s</span>
+
+pressure = 101325; <span class="comment">%kpa</span>
+
+gradient = 1; <span class="comment">%1 if altitude is in gradient, 0 if not</span>
+referenceA = 0; <span class="comment">%reference altitude for gradient ranges</span>
+referenceP = 0; <span class="comment">%reference pressure for gradient ranges</span>
+referenceR = 0; <span class="comment">%reference density for gradient ranges</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">%loop through and first find the temperature for the altitude.</span>
+<span class="comment">%then find if it is a gradient or isotherm</span>
+<span class="comment">%find the pressure using the appropriate formula</span>
+<span class="comment">%and calculate density using equation of state</span>
+<span class="keyword">for</span> x = (1:Astep)
+
+    altitude = altitudes(x);
+    <span class="keyword">if</span>(altitude &gt;= 0 &amp;&amp; altitude &lt;= 11)     <span class="comment">%troposphere</span>
+        temperature = 288.16 + altitude * -6.5;
+        gradient = 1;
+
+        referenceA = 0;             <span class="comment">%km</span>
+        referenceP = 101325;        <span class="comment">%pa</span>
+        referenceR = 1.225;         <span class="comment">%kg/m^3</span>
+        referenceT = 288.16;        <span class="comment">%K</span>
+        a = -6.5;
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span>(altitude &gt; 11 &amp;&amp; altitude &lt;= 25)     <span class="comment">%tropopause</span>
+        temperature = 216.66;
+        gradient = 0;
+        referenceA = 11;             <span class="comment">%km</span>
+        referenceP = 22700;        <span class="comment">%pa</span>
+        referenceT = temperature;        <span class="comment">%K</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span>(altitude &gt; 25)     <span class="comment">%stratosphere</span>
+        temperature = 216.66 + (altitude - 25) * 3;
+        gradient = 1;
+        referenceA = 25;               <span class="comment">%km</span>
+        referenceP = 2527.3;           <span class="comment">%pa</span>
+        referenceR = 0.040639;         <span class="comment">%kg/m^3</span>
+        referenceT = 216.66;           <span class="comment">%k</span>
+        a = 3;
+    <span class="keyword">end</span>
+
+
+    temperatures(x) = temperature;
+    speedsofsound(x) = sqrt((Gamma * R * temperature) * 1000);
+
+    <span class="keyword">if</span>(gradient)
+        pressures(x) = referenceP * (temperature / referenceT) ^ ((-G) / (a * R));
+
+    <span class="keyword">else</span>
+        pressures(x) = referenceP * exp(-(G / (R * temperature)) * (altitude - referenceA));
+    <span class="keyword">end</span>
+
+    densities(x) = pressures(x) / (R * temperatures(x) * 1000);
+
+    <span class="comment">%%%%%%%%%%%%%%%%%%%</span>
+    <span class="comment">%convert to english units</span>
+    <span class="comment">%temp - K -&gt; R</span>
+    <span class="comment">%density - kg/m^3 -&gt; slug/ft^3</span>
+    <span class="comment">%pressure - pa -&gt; lb/ft^2</span>
+    <span class="comment">%speed of sound - m/s -&gt; feet/s</span>
+    <span class="comment">%altitude - km -&gt; ft</span>
+
+    Etemperatures(x) = temperatures(x) * 1.8;
+    Epressures(x) = pressures(x)* 0.020885434273039;
+    Edensities(x) = densities(x) * 0.00194032;
+    Espeedsofsound(x) = speedsofsound(x) * 3.28084;
+    Ealtitudes(x) = altitudes(x) * 3280.84;
+    Ialtitudes(x) = altitudes(x) * 1000;
+
+<span class="keyword">end</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% Plots - SI Units</span>
+figure();
+figure(1);
+plot(temperatures,Ialtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Temperature Distribution in the Standard Atmosphere (SI Units)'</span>);
+xlabel(<span class="string">'Temperature (k)'</span>);
+ylabel(<span class="string">'Altitude (m)'</span>);
+
+figure();
+figure(2);
+plot(speedsofsound,Ialtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Speed of Sound Distribution in the Standard Atmosphere (SI Units)'</span>);
+xlabel(<span class="string">'Speed of Sound (m/s)'</span>);
+ylabel(<span class="string">'Altitude (m)'</span>);
+
+figure();
+figure(3);
+plot(pressures,Ialtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Pressure Distribution in the Standard Atmosphere (SI Units)'</span>);
+xlabel(<span class="string">'Pressure (pa)'</span>);
+ylabel(<span class="string">'Altitude (m)'</span>);
+
+figure();
+figure(4);
+plot(densities,Ialtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Density Distribution in the Standard Atmosphere (SI Units)'</span>);
+xlabel(<span class="string">'Density (kg/m^3)'</span>);
+ylabel(<span class="string">'Altitude (m)'</span>);
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% Plots - English Engineering Units</span>
+figure();
+figure(5);
+plot(Edensities,Ealtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Density Distribution in the Standard Atmosphere (English Engineering Units)'</span>);
+xlabel(<span class="string">'Density (slug/ft^3)'</span>);
+ylabel(<span class="string">'Altitude (ft)'</span>);
+
+figure();
+figure(6);
+plot(Epressures,Ealtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Pressure Distribution in the Standard Atmosphere (English Engineering Units)'</span>);
+xlabel(<span class="string">'Pressure (lb/ft^2)'</span>);
+ylabel(<span class="string">'Altitude (ft)'</span>);
+
+figure();
+figure(7);
+plot(Etemperatures,Ealtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Temperatures Distribution in the Standard Atmosphere (English Engineering Units)'</span>);
+xlabel(<span class="string">'Temperature (R)'</span>);
+ylabel(<span class="string">'Altitude (ft)'</span>);
+
+figure();
+figure(8);
+plot(Espeedsofsound,Ealtitudes,<span class="string">'r'</span>);
+title(<span class="string">'Speed of Sound Distribution in the Standard Atmosphere (English Engineering Units)'</span>);
+xlabel(<span class="string">'Speed of Sound (ft/s)'</span>);
+ylabel(<span class="string">'Altitude (ft)'</span>);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%AAE 251 Fall 2020
+%Homework <Homework 1>
+%standardAtmosphere.m
+%Authors <Corey O'Brien (obrie187)>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Constants and Definitions
+
+Astart = 0;                 %start altitude (km)
+Astop = 31;                 %stop altitude (km)
+Astep = Astop / .25;        %number of altitude increments
+
+altitudes = linspace(Astart,Astop,Astep); %generate list of altitudes
+
+temperatures = zeros(1,Astep);     %generate lists for t,p,rho,s       
+pressures = zeros(1,Astep);
+densities = zeros(1,Astep);
+speedsofsound = zeros(1,Astep);
+
+Etemperatures = zeros(1,Astep);     %generate lists for engineering units       
+Epressures = zeros(1,Astep);
+Edensities = zeros(1,Astep);
+Espeedsofsound = zeros(1,Astep);
+Ealtitudes = zeros(1,Astep);
+Ialtitudes = zeros(1,Astep);            %Needed for SI unit of length
+
+R = .286;       %kj/kg/k
+Gamma = 1.4;    %Dimensionless,
+G = 9.81;        %m/s
+
+pressure = 101325; %kpa
+
+gradient = 1; %1 if altitude is in gradient, 0 if not
+referenceA = 0; %reference altitude for gradient ranges
+referenceP = 0; %reference pressure for gradient ranges
+referenceR = 0; %reference density for gradient ranges
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%loop through and first find the temperature for the altitude.
+%then find if it is a gradient or isotherm
+%find the pressure using the appropriate formula
+%and calculate density using equation of state
+for x = (1:Astep)
+    
+    altitude = altitudes(x);
+    if(altitude >= 0 && altitude <= 11)     %troposphere
+        temperature = 288.16 + altitude * -6.5;
+        gradient = 1;
+        
+        referenceA = 0;             %km
+        referenceP = 101325;        %pa
+        referenceR = 1.225;         %kg/m^3
+        referenceT = 288.16;        %K
+        a = -6.5;
+    end
+    
+    if(altitude > 11 && altitude <= 25)     %tropopause
+        temperature = 216.66;
+        gradient = 0;
+        referenceA = 11;             %km
+        referenceP = 22700;        %pa
+        referenceT = temperature;        %K
+    end
+    
+    if(altitude > 25)     %stratosphere
+        temperature = 216.66 + (altitude - 25) * 3;
+        gradient = 1;
+        referenceA = 25;               %km
+        referenceP = 2527.3;           %pa
+        referenceR = 0.040639;         %kg/m^3
+        referenceT = 216.66;           %k
+        a = 3;
+    end
+    
+    
+    temperatures(x) = temperature;
+    speedsofsound(x) = sqrt((Gamma * R * temperature) * 1000);
+    
+    if(gradient)
+        pressures(x) = referenceP * (temperature / referenceT) ^ ((-G) / (a * R));
+        
+    else
+        pressures(x) = referenceP * exp(-(G / (R * temperature)) * (altitude - referenceA));
+    end
+    
+    densities(x) = pressures(x) / (R * temperatures(x) * 1000);    
+    
+    %%%%%%%%%%%%%%%%%%%
+    %convert to english units
+    %temp - K -> R
+    %density - kg/m^3 -> slug/ft^3
+    %pressure - pa -> lb/ft^2
+    %speed of sound - m/s -> feet/s
+    %altitude - km -> ft
+
+    Etemperatures(x) = temperatures(x) * 1.8;
+    Epressures(x) = pressures(x)* 0.020885434273039;
+    Edensities(x) = densities(x) * 0.00194032;
+    Espeedsofsound(x) = speedsofsound(x) * 3.28084;
+    Ealtitudes(x) = altitudes(x) * 3280.84;
+    Ialtitudes(x) = altitudes(x) * 1000;
+        
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Plots - SI Units
+figure();
+figure(1);
+plot(temperatures,Ialtitudes,'r');
+title('Temperature Distribution in the Standard Atmosphere (SI Units)');
+xlabel('Temperature (k)');
+ylabel('Altitude (m)');
+
+figure();
+figure(2);
+plot(speedsofsound,Ialtitudes,'r');
+title('Speed of Sound Distribution in the Standard Atmosphere (SI Units)');
+xlabel('Speed of Sound (m/s)');
+ylabel('Altitude (m)');
+
+figure();
+figure(3);
+plot(pressures,Ialtitudes,'r');
+title('Pressure Distribution in the Standard Atmosphere (SI Units)');
+xlabel('Pressure (pa)');
+ylabel('Altitude (m)');
+
+figure();
+figure(4);
+plot(densities,Ialtitudes,'r');
+title('Density Distribution in the Standard Atmosphere (SI Units)');
+xlabel('Density (kg/m^3)');
+ylabel('Altitude (m)');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Plots - English Engineering Units
+figure();
+figure(5);
+plot(Edensities,Ealtitudes,'r');
+title('Density Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Density (slug/ft^3)');
+ylabel('Altitude (ft)');
+
+figure();
+figure(6);
+plot(Epressures,Ealtitudes,'r');
+title('Pressure Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Pressure (lb/ft^2)');
+ylabel('Altitude (ft)');
+
+figure();
+figure(7);
+plot(Etemperatures,Ealtitudes,'r');
+title('Temperatures Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Temperature (R)');
+ylabel('Altitude (ft)');
+
+figure();
+figure(8);
+plot(Espeedsofsound,Ealtitudes,'r');
+title('Speed of Sound Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Speed of Sound (ft/s)');
+ylabel('Altitude (ft)');
+
+
+##### SOURCE END #####
+--></body></html>
