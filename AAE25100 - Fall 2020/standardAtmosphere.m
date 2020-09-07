@@ -22,6 +22,7 @@ Epressures = zeros(1,Astep);
 Edensities = zeros(1,Astep);
 Espeedsofsound = zeros(1,Astep);
 Ealtitudes = zeros(1,Astep);
+Ialtitudes = zeros(1,Astep);            %Needed for SI unit of length
 
 R = .286;       %kj/kg/k
 Gamma = 1.4;    %Dimensionless,
@@ -35,7 +36,10 @@ referenceP = 0; %reference pressure for gradient ranges
 referenceR = 0; %reference density for gradient ranges
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+%loop through and first find the temperature for the altitude.
+%then find if it is a gradient or isotherm
+%find the pressure using the appropriate formula
+%and calculate density using equation of state
 for x = (1:Astep)
     
     altitude = altitudes(x);
@@ -94,37 +98,38 @@ for x = (1:Astep)
     Edensities(x) = densities(x) * 0.00194032;
     Espeedsofsound(x) = speedsofsound(x) * 3.28084;
     Ealtitudes(x) = altitudes(x) * 3280.84;
+    Ialtitudes(x) = altitudes(x) * 1000;
         
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Plots - SI Units
 figure();
 figure(1);
-plot(temperatures,altitudes,'r');
+plot(temperatures,Ialtitudes,'r');
 title('Temperature Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Temperature (k)');
-ylabel('Altitude (Km)');
+ylabel('Altitude (m)');
 
 figure();
 figure(2);
-plot(speedsofsound,altitudes,'r');
+plot(speedsofsound,Ialtitudes,'r');
 title('Speed of Sound Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Speed of Sound (m/s)');
-ylabel('Altitude (Km)');
+ylabel('Altitude (m)');
 
 figure();
 figure(3);
-plot(pressures,altitudes,'r');
+plot(pressures,Ialtitudes,'r');
 title('Pressure Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Pressure (pa)');
-ylabel('Altitude (Km)');
+ylabel('Altitude (m)');
 
 figure();
 figure(4);
-plot(densities,altitudes,'r');
+plot(densities,Ialtitudes,'r');
 title('Density Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Density (kg/m^3)');
-ylabel('Altitude (Km)');
+ylabel('Altitude (m)');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Plots - English Engineering Units

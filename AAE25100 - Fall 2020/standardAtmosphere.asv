@@ -35,7 +35,10 @@ referenceP = 0; %reference pressure for gradient ranges
 referenceR = 0; %reference density for gradient ranges
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+%loop through and first find the temperature for the altitude.
+%then find if it is a gradient or isotherm
+%find the pressure using the appropriate formula
+%and calculate density using equation of state
 for x = (1:Astep)
     
     altitude = altitudes(x);
@@ -87,13 +90,13 @@ for x = (1:Astep)
     %density - kg/m^3 -> slug/ft^3
     %pressure - pa -> lb/ft^2
     %speed of sound - m/s -> feet/s
-    %altitude
+    %altitude - km -> ft
 
     Etemperatures(x) = temperatures(x) * 1.8;
     Epressures(x) = pressures(x)* 0.020885434273039;
     Edensities(x) = densities(x) * 0.00194032;
     Espeedsofsound(x) = speedsofsound(x) * 3.28084;
-    Ealtitudes(x) = altitudes(x)
+    Ealtitudes(x) = altitudes(x) * 3280.84;
         
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,32 +104,58 @@ end
 figure();
 figure(1);
 plot(temperatures,altitudes,'r');
-title('Temperature Distribution in the Standard Atmosphere');
+title('Temperature Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Temperature (k)');
 ylabel('Altitude (Km)');
 
 figure();
 figure(2);
 plot(speedsofsound,altitudes,'r');
-title('Speed of Sound Distribution in the Standard Atmosphere');
+title('Speed of Sound Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Speed of Sound (m/s)');
 ylabel('Altitude (Km)');
 
 figure();
 figure(3);
 plot(pressures,altitudes,'r');
-title('Pressure Distribution in the Standard Atmosphere');
+title('Pressure Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Pressure (pa)');
 ylabel('Altitude (Km)');
 
 figure();
 figure(4);
 plot(densities,altitudes,'r');
-title('Density Distribution in the Standard Atmosphere');
+title('Density Distribution in the Standard Atmosphere (SI Units)');
 xlabel('Density (kg/m^3)');
 ylabel('Altitude (Km)');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Plots - English Engineering Units
+figure();
+figure(5);
+plot(Edensities,Ealtitudes,'r');
+title('Density Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Density (slug/ft^3)');
+ylabel('Altitude (ft)');
 
+figure();
+figure(6);
+plot(Epressures,Ealtitudes,'r');
+title('Pressure Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Pressure (lb/ft^2)');
+ylabel('Altitude (ft)');
+
+figure();
+figure(7);
+plot(Etemperatures,Ealtitudes,'r');
+title('Temperatures Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Temperature (R)');
+ylabel('Altitude (ft)');
+
+figure();
+figure(8);
+plot(Espeedsofsound,Ealtitudes,'r');
+title('Speed of Sound Distribution in the Standard Atmosphere (English Engineering Units)');
+xlabel('Speed of Sound (ft/s)');
+ylabel('Altitude (ft)');
 
