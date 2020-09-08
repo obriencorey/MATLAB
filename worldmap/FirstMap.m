@@ -4,6 +4,6 @@ load coastlines
 whos
 
 [latcells, loncells] = polysplit(coastlat, coastlon);
-numel(latcells)
+numel(latcells);
 
-plotm(coastlat, coastlon)
+plotm(coastlat, coastlon);
