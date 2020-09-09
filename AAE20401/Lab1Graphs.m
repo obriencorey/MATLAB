@@ -23,7 +23,7 @@ strainWheat = [.00801,.00701,.00623,.00561,.00432,.00401];
 % set(gca,'FontName','Times');
 % set(gca,'FontSize',14);
 
-plot(radii,strainWheat,'k');
+plot(radiiR,strainWheat,'k');
 yticks([.003 .0035 .004 .0045 0.005 .0055 .006 .0065 .007 .0075 .008 .0085 .009 .0095])
 yticklabels({'.003','.0035','.004','.0045','.005', '.0055' ,'.006' ,'.0065', '.007' ,'.0075' ,'.008' ,'.0085' ,'.009' ,'.0095'});
 xlabel("Reciprocal of Curvature (inches)");
@@ -32,5 +32,5 @@ grid on
 set(gca,'FontName','Times');
 set(gca,'FontSize',14);
 
-% mdl = fitlm(radiiR,strain);
-% mdl.Rsquared.Ordinary
+mdl = fitlm(radiiR,strainWheat);
+mdl.Rsquared.Ordinary
