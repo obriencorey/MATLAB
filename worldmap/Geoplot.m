@@ -1,7 +1,6 @@
-latSeattle = 47.62;
-lonSeattle = -122.33;
-latAnchorage = 61.20;
-lonAnchorage = -149.9;
+lon = (-170:10:170);
+lat = 50 * cosd(3*lon);
+A = 101 + 100*(sind(2*lon));
+C = cosd(4*lon);
 
-geoplot([latPittsburgh latAnchorage],[lonPittsburgh lonAnchorage],'g-*')
-geolimits([45 62],[-149 -123])
+geoscatter(lat,lon,A,C,'^')
