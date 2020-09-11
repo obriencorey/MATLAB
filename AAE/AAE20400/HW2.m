@@ -12,3 +12,4 @@ xlabel("STRAIN");
 ylabel("STRESS");
 set(gca,'FontName','Poppins');
 set(gca,'FontSize',10);
+grid on
