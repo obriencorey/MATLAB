@@ -41,32 +41,32 @@ engineType = input("Fixedpitchprop, Variablepitch, Turboprop): ");
 %determine specific fuel consumption using switch statement
 switch engineType
     case "Turbojet"
-        cruise = 0.9 / 60; %1/s
-        loiter = 0.8 / 60;
+        cruise = 0.9; %1/s
+        loiter = 0.8;
         guess = 50000;
     case "LBTurboFan"
-        cruise = 0.8 / 60; %1/s
-        loiter = 0.7 / 60;
+        cruise = 0.8; %1/s
+        loiter = 0.7 ;
         guess = 75000;
     case "HBTurboFan"
-        cruise = 0.5 / 60; %1/s
-        loiter = 0.4 / 60;
+        cruise = 0.5; %1/s
+        loiter = 0.4;
         guess = 100000;
     case "Fixedpitchprop"
-        cruise = (0.4 / 60) * (cruiseSpeed / (550 * 0.8));
-        loiter = (0.5 / 60) * (cruiseSpeed / (550 * 0.8));
+        cruise = (0.4) * (cruiseSpeed / (550 * 0.8));
+        loiter = (0.5) * (cruiseSpeed / (550 * 0.8));
         guess = 25000;
     case "Variablepitch"
-        cruise = (0.4 / 60) * (cruiseSpeed / (550 * 0.8));
-        loiter = (0.5 / 60) * (cruiseSpeed / (550 * 0.8));
+        cruise = (0.4) * (cruiseSpeed / (550 * 0.8));
+        loiter = (0.5) * (cruiseSpeed / (550 * 0.8));
         guess = 10000;
     case "Turboprop"
-        cruise = (0.5 / 60) * (cruiseSpeed / (550 * 0.8));
-        loiter = (0.6/ 60) * (cruiseSpeed / (550 * 0.8));
+        cruise = (0.5) * (cruiseSpeed / (550 * 0.8));
+        loiter = (0.6) * (cruiseSpeed / (550 * 0.8));
         guess = 50000;
     otherwise
-        cruise = 0.5 / 60; 
-        loiter = 0.4 / 60;
+        cruise = 0.5; 
+        loiter = 0.4;
         guess = 50000;
 end 
 
@@ -100,26 +100,26 @@ while(type == "help" || type == "Help" || type == "HELP")
 end
 
 WEFrac = 0.97 * .985;   %takeoff and climb
-WEFrac = WEFrac * exp((-range * (cruise / 60)) / (cruiseSpeed * LDratio * 0.866)); %cruise
-WEFrac = WEFrac * exp((-LoiterTime * (loiter / 6)) / (LDratio));  %loiter
-WEFrac = WEFrac * 1.195;    %descend
+WEFrac = WEFrac * exp((-range * (cruise / 2600)) / (cruiseSpeed * LDratio * 0.866)); %cruise
+WEFrac = WEFrac * exp((-LoiterTime * (loiter / 3600)) / (LDratio));  %loiter
+WEFrac = WEFrac * 0.995;    %descend
 
 WEFrac = 1.06 * (1 - WEFrac); %added fraction for safety 
-WEFrac = 1 - WEFrac;
 
 
-frac = .7 * EmptyWeightFracA(type) * guess ^ EmptyWeightFracC(type); %fraction calculated using guess
 
-EmptyWeight = payloadWeight / (1 - WEFrac - frac)
-
+frac = .9 * EmptyWeightFracA(type) * guess ^ EmptyWeightFracC(type); %fraction calculated using guess
+EmptyWeight = payloadWeight / (1 - WEFrac - frac);
 guess = guess + (guess - EmptyWeight) * .5;
 counter = 1;
+
+%loop through 20 times to converge upon actual takeoff weight
 while(counter < 5)
     EmptyWeight = payloadWeight / (1 - WEFrac - frac);
 
     guess = guess + (guess - EmptyWeight) * .5;
     counter = counter + 1;
 end
-disp(EmptyWeight);
+fprintf("The empty weight is: %.2fkg\n",EmptyWeight);
 
 
