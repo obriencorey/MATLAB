@@ -102,7 +102,7 @@ end
 WEFrac = 0.97 * .985;   %takeoff and climb
 WEFrac = WEFrac * exp((-range * (cruise / 60)) / (cruiseSpeed * LDratio * 0.866)); %cruise
 WEFrac = WEFrac * exp((-LoiterTime * (loiter / 6)) / (LDratio));  %loiter
-WEFrac = WEFrac * 1.195;    %descend
+WEFrac = WEFrac * 0.995;    %descend
 
 WEFrac = 1.06 * (1 - WEFrac); %added fraction for safety 
 WEFrac = 1 - WEFrac;
