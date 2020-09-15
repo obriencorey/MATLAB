@@ -114,7 +114,7 @@ guess = guess + (guess - EmptyWeight) * .5;
 counter = 1;
 
 %loop through 20 times to converge upon actual takeoff weight
-while(counter < 5)
+while(counter < 20)
     EmptyWeight = payloadWeight / (1 - WEFrac - frac);
 
     guess = guess + (guess - EmptyWeight) * .5;
