@@ -11,8 +11,10 @@ mu = 3.986*10^5;
 
 R = p / (1 + e * cosd(Anom));
 V = sqrt(mu * (2/R - 1/a));
+period = 2 * pi * sqrt(a^3 / mu);
 
-fprintf("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+fprintf("\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 fprintf("Your orbital radius is: %.3fkm. \nYour orbital height is %.3fkm\n",R,R-6371);
 fprintf("Your velocity is: %.3fkm/s\n",V);
+fprintf("Your period is: %.3fminutes\n",period / 60);
 fprintf("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
