@@ -17,7 +17,7 @@ strain = extension./L0;
 
 hold on
 plot(strain,stress,'k');
-title("Stress vs. Strain for Mild Steel");
+title("Stress vs. Strain for 2024-T3 Aluminum Alloy");
 xlabel("Strain");
 ylabel("Stress (ksi)");
 yticks([.5e+4 1e+4 1.5e+4 2e+4 2.5e+4 3e+4 3.5e+4 4e+4 4.5e+4])
