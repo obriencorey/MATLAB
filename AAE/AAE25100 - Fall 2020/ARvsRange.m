@@ -28,5 +28,14 @@ text(7500 - 50,9.96 + .4,'777x-9');
 plot(8000,7.8,'.','MarkerSize',marksize);
 text(8000 - 50,7.8 + .4,'A380');
 
+plot(8000,8.47,'.','MarkerSize',marksize);
+text(8000 - 50,8.47 + .4,'747-8');
+
+plot(8100,9.49,'.','MarkerSize',marksize);
+text(8100 - 50,9.49 + .4,'A350-900');
+
+plot(8000,8.47,'.','MarkerSize',marksize);
+text(8000 - 50,8.47 + .4,'747-8');
+
 grid on
 hold off
