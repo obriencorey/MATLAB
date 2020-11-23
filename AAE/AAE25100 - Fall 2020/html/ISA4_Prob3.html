@@ -1,0 +1,220 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ISA4_Prob3</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-03"><meta name="DC.source" content="ISA4_Prob3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">RE = 6371;
+omega = 7.27 * 10^(-5);
+mu = 3.986 * 10^5;
+h0 = 100;
+mpay = 4500;
+g0 = 9.81;
+
+h = linspace(100,2000,20);
+dV1 = 8970;     <span class="comment">%m/s</span>
+dV2 = zeros(1,20);
+dV3 = zeros(1,20);
+prop1 = zeros(1,20);
+prop2 = zeros(1,20);
+prop3 = zeros(1,20);
+
+Isp1 = 390;
+Isp2 = 420;
+Isp3 = 450;
+
+finert1 = .058;
+finert2 = .06;
+finert3 = 0.063;
+
+<span class="keyword">for</span> x = 1:20
+    <span class="comment">%velocities used for deltaV calculations</span>
+    Vtrans = sqrt(mu * (2 / (RE + h0) - (1 / ((2 * RE + h0 +h(x)) / 2))));
+    Vtrans2 = sqrt(mu * ((2 / (RE + h(x))) - (1 / ((2 * RE + h0 +h(x)) / 2))));
+    Vleo = sqrt(mu / (RE + h0));
+    Vfinal = sqrt(mu / (RE + h(x)));
+
+    <span class="comment">%deltaVs for 2nd and 3rd stage</span>
+    dV2(x) = abs(Vtrans - Vleo);
+    dV3(x) = abs(Vfinal - Vtrans2);
+
+    <span class="comment">%convert to m/s</span>
+    dV2 = dV2(x) * 1000;
+    dV3 = dV3(x) * 1000;
+
+
+    <span class="comment">%initial masses for each stage</span>
+    mi_3 = mpay * (exp(dV3 / (Isp3 * g0)) * (1 - finert3)) / (1 - finert3 * exp(dV3 / (Isp3 * g0)));
+    mi_2 = mi_3 * (exp(dV2 / (Isp2 * g0)) * (1 - finert2)) / (1 - finert2 * exp(dV2 / (Isp2 * g0)));
+    mi_1 = mi_2 * (exp(dV1 / (Isp1 * g0)) * (1 - finert1)) / (1 - finert1 * exp(dV1 / (Isp1 * g0)));
+
+    <span class="comment">%propellant masses for each stage</span>
+    mprop_3 = mpay * ((exp(dV3 / (Isp3 * g0)) - 1) * (1 - finert3)) / (1 - finert3 * exp(dV3 / (Isp3 * g0)));
+    mprop_2 = mi_3 * ((exp(dV2 / (Isp2 * g0)) - 1) * (1 - finert2)) / (1 - finert2 * exp(dV2 / (Isp2 * g0)));
+    mprop_1 = mi_2 * ((exp(dV1 / (Isp1 * g0)) - 1) * (1 - finert1)) / (1 - finert1 * exp(dV1 / (Isp1 * g0)));
+
+    prop1(x) = mprop_1;
+    prop2(x) = mprop_2;
+    prop3(x) = mprop_3;
+
+    <span class="keyword">if</span>(x == 6)
+        fprintf(<span class="string">"Stage 1 prop mass: %f. Stage 2 prop mass: %f. Stage 3 prop mass: %f\n"</span>,mprop_1,mprop_2,mprop_3);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%</span>
+<span class="comment">% plot(h,prop1);</span>
+<span class="comment">% title("stage 1 propellant mass vs h")</span>
+<span class="comment">% xlabel("h (km)");</span>
+<span class="comment">% ylabel("propellant mass (kg)");</span>
+<span class="comment">%</span>
+<span class="comment">% plot(h,prop2);</span>
+<span class="comment">% title("stage 2 propellant mass vs h")</span>
+<span class="comment">% xlabel("h (km)");</span>
+<span class="comment">% ylabel("propellant mass (kg)");</span>
+
+plot(h,prop3);
+title(<span class="string">"stage 3 propellant mass vs h"</span>)
+xlabel(<span class="string">"h (km)"</span>);
+ylabel(<span class="string">"propellant mass (kg)"</span>);
+</pre><pre class="codeoutput">Stage 1 prop mass: 108670.340924. Stage 2 prop mass: 166.774104. Stage 3 prop mass: 147.394685
+</pre><img vspace="5" hspace="5" src="ISA4_Prob3_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+RE = 6371;
+omega = 7.27 * 10^(-5);
+mu = 3.986 * 10^5;
+h0 = 100;
+mpay = 4500;
+g0 = 9.81;
+
+h = linspace(100,2000,20);
+dV1 = 8970;     %m/s
+dV2 = zeros(1,20);
+dV3 = zeros(1,20);
+prop1 = zeros(1,20);
+prop2 = zeros(1,20);
+prop3 = zeros(1,20);
+
+Isp1 = 390;
+Isp2 = 420;
+Isp3 = 450;
+
+finert1 = .058;
+finert2 = .06;
+finert3 = 0.063;
+
+for x = 1:20
+    %velocities used for deltaV calculations
+    Vtrans = sqrt(mu * (2 / (RE + h0) - (1 / ((2 * RE + h0 +h(x)) / 2))));
+    Vtrans2 = sqrt(mu * ((2 / (RE + h(x))) - (1 / ((2 * RE + h0 +h(x)) / 2))));
+    Vleo = sqrt(mu / (RE + h0));
+    Vfinal = sqrt(mu / (RE + h(x)));
+    
+    %deltaVs for 2nd and 3rd stage
+    dV2(x) = abs(Vtrans - Vleo);
+    dV3(x) = abs(Vfinal - Vtrans2);
+    
+    %convert to m/s
+    dV2 = dV2(x) * 1000;
+    dV3 = dV3(x) * 1000;
+    
+    
+    %initial masses for each stage
+    mi_3 = mpay * (exp(dV3 / (Isp3 * g0)) * (1 - finert3)) / (1 - finert3 * exp(dV3 / (Isp3 * g0)));
+    mi_2 = mi_3 * (exp(dV2 / (Isp2 * g0)) * (1 - finert2)) / (1 - finert2 * exp(dV2 / (Isp2 * g0)));
+    mi_1 = mi_2 * (exp(dV1 / (Isp1 * g0)) * (1 - finert1)) / (1 - finert1 * exp(dV1 / (Isp1 * g0)));
+    
+    %propellant masses for each stage
+    mprop_3 = mpay * ((exp(dV3 / (Isp3 * g0)) - 1) * (1 - finert3)) / (1 - finert3 * exp(dV3 / (Isp3 * g0)));
+    mprop_2 = mi_3 * ((exp(dV2 / (Isp2 * g0)) - 1) * (1 - finert2)) / (1 - finert2 * exp(dV2 / (Isp2 * g0)));
+    mprop_1 = mi_2 * ((exp(dV1 / (Isp1 * g0)) - 1) * (1 - finert1)) / (1 - finert1 * exp(dV1 / (Isp1 * g0)));
+   
+    prop1(x) = mprop_1;
+    prop2(x) = mprop_2;
+    prop3(x) = mprop_3;
+    
+    if(x == 6)
+        fprintf("Stage 1 prop mass: %f. Stage 2 prop mass: %f. Stage 3 prop mass: %f\n",mprop_1,mprop_2,mprop_3);
+    end
+end
+
+% 
+% plot(h,prop1);
+% title("stage 1 propellant mass vs h")
+% xlabel("h (km)");
+% ylabel("propellant mass (kg)");
+% 
+% plot(h,prop2);
+% title("stage 2 propellant mass vs h")
+% xlabel("h (km)");
+% ylabel("propellant mass (kg)");
+
+plot(h,prop3);
+title("stage 3 propellant mass vs h")
+xlabel("h (km)");
+ylabel("propellant mass (kg)");
+##### SOURCE END #####
+--></body></html>
