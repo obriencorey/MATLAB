@@ -1,0 +1,267 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ISA5_Question1</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-28"><meta name="DC.source" content="ISA5_Question1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%AAE 251 Fall 2020</span>
+<span class="comment">%ISA &lt;ISA8&gt;</span>
+<span class="comment">%ISA5_Question1.m</span>
+<span class="comment">%Authors &lt;Corey O'Brien (obrie187)&gt;</span>
+
+MTOW = 4750;            <span class="comment">%kg</span>
+Wempty = 2810;          <span class="comment">%kg</span>
+Wmaxfuel = 1225;        <span class="comment">%kg</span>
+
+Crew = 1;
+WCrew = 65;             <span class="comment">%kg</span>
+
+Passenger = 8;
+WPassenger = 75;        <span class="comment">%kg</span>
+WLuggage = 25;          <span class="comment">%kg</span>
+
+LtoD = 15;              <span class="comment">%lift to drag ratio</span>
+eta = 0.8;              <span class="comment">%propeller efficiency</span>
+ct = 7.16e-07;          <span class="comment">%specific fuel consumption 1/m</span>
+
+Takeoff = 0.995;        <span class="comment">%Fuel fractions for various phases of the flight</span>
+Climb = 0.98;
+Descent = 0.99;
+Loiter = 0.987;
+Land = 0.992;
+
+<span class="comment">%for point A</span>
+<span class="comment">%-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span>
+<span class="comment">%Find the remaining weight that can be used to store fuel</span>
+fuelweight = MTOW - (Wempty + Crew * WCrew + Passenger * (WPassenger + WLuggage));
+
+<span class="comment">%adjust for takeoff and climb fractions</span>
+fuelweight = fuelweight * Takeoff * Climb;
+
+<span class="comment">%M1 is the the weight without the fuel burned during climb and takeoff</span>
+M1 = Wempty + Crew * WCrew + Passenger * (WPassenger + WLuggage) + fuelweight;
+<span class="comment">%adjust for descent, loiter, and land</span>
+fuelweight = fuelweight - (fuelweight * (1 - Descent) + fuelweight * (1-Loiter) + fuelweight * (1 - Land));
+
+<span class="comment">%Weight 2 is the fuel available leaving fuel for descent landing and loiter</span>
+M2 = M1 - fuelweight;
+
+<span class="comment">%range at point A</span>
+RangeA = eta / ct * LtoD * log(M1 / M2) * (1 / 1000);     <span class="comment">%km</span>
+PayloadA = Passenger * (WPassenger + WLuggage);
+
+<span class="comment">%for point B</span>
+<span class="comment">%-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span>
+WLuggage = MTOW - (Wmaxfuel + Wempty + Crew * WCrew + Passenger * WPassenger);
+WLuggage = WLuggage / 8;
+
+<span class="comment">%adjust for takeoff and climb fractions</span>
+fuelweight = Wmaxfuel * Takeoff * Climb;
+
+M1 = Wempty + Crew * WCrew + Passenger * (WPassenger + WLuggage) + fuelweight;
+
+<span class="comment">%adjust for descent, loiter, and land</span>
+fuelweight = fuelweight - (fuelweight * (1 - Descent) + fuelweight * (1-Loiter) + fuelweight * (1 - Land));
+M2 = M1 - fuelweight;
+RangeB = eta / ct * LtoD * log(M1 / M2) * (1 / 1000);     <span class="comment">%km</span>
+PayloadB = Passenger * (WPassenger + WLuggage);
+
+<span class="comment">%for point C</span>
+<span class="comment">%-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span>
+<span class="comment">%adjust for takeoff and climb fractions</span>
+fuelweight = Wmaxfuel * Takeoff * Climb;
+
+M1 = Wempty + Crew * WCrew + fuelweight;
+
+<span class="comment">%adjust for descent, loiter, and land</span>
+fuelweight = fuelweight - (fuelweight * (1 - Descent) + fuelweight * (1-Loiter) + fuelweight * (1 - Land));
+M2 = M1 - fuelweight;
+RangeC = eta / ct * LtoD * log(M1 / M2) * (1 / 1000);     <span class="comment">%km</span>
+PayloadC = 0;
+
+hold <span class="string">on</span>
+grid <span class="string">on</span>
+
+<span class="comment">%plot data on plot</span>
+plot(RangeA,PayloadA,<span class="string">'r*'</span>)
+text(RangeA,PayloadA + 60,<span class="string">"full payload"</span>)
+plot(RangeB,PayloadB,<span class="string">'r*'</span>)
+text(RangeB,PayloadB + 60,<span class="string">"full fuel"</span>)
+plot(RangeC,PayloadC,<span class="string">'r*'</span>)
+text(RangeC,PayloadC + 60,<span class="string">"no payload"</span>)
+
+<span class="comment">%create lines to connect points</span>
+plot([0 RangeA], [PayloadA PayloadA],<span class="string">'k'</span>)
+plot([RangeA RangeB], [PayloadA PayloadB],<span class="string">'k'</span>)
+plot([RangeB RangeC], [PayloadB PayloadC],<span class="string">'k'</span>)
+xlim([-300 6000])
+ylim([-50 900])
+xline(0);
+yline(0);
+title(<span class="string">"Range vs Payload"</span>)
+xlabel(<span class="string">"Range (km)"</span>);
+ylabel(<span class="string">"Payload (kg)"</span>);
+</pre><img vspace="5" hspace="5" src="ISA5_Question1_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%AAE 251 Fall 2020
+%ISA <ISA8>
+%ISA5_Question1.m
+%Authors <Corey O'Brien (obrie187)>
+
+MTOW = 4750;            %kg
+Wempty = 2810;          %kg
+Wmaxfuel = 1225;        %kg
+
+Crew = 1; 
+WCrew = 65;             %kg
+
+Passenger = 8;          
+WPassenger = 75;        %kg
+WLuggage = 25;          %kg
+
+LtoD = 15;              %lift to drag ratio
+eta = 0.8;              %propeller efficiency
+ct = 7.16e-07;          %specific fuel consumption 1/m
+
+Takeoff = 0.995;        %Fuel fractions for various phases of the flight
+Climb = 0.98;
+Descent = 0.99;
+Loiter = 0.987;
+Land = 0.992;
+
+%for point A
+%-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+%Find the remaining weight that can be used to store fuel
+fuelweight = MTOW - (Wempty + Crew * WCrew + Passenger * (WPassenger + WLuggage)); 
+
+%adjust for takeoff and climb fractions
+fuelweight = fuelweight * Takeoff * Climb;
+
+%M1 is the the weight without the fuel burned during climb and takeoff
+M1 = Wempty + Crew * WCrew + Passenger * (WPassenger + WLuggage) + fuelweight;
+%adjust for descent, loiter, and land
+fuelweight = fuelweight - (fuelweight * (1 - Descent) + fuelweight * (1-Loiter) + fuelweight * (1 - Land));
+
+%Weight 2 is the fuel available leaving fuel for descent landing and loiter
+M2 = M1 - fuelweight;
+
+%range at point A
+RangeA = eta / ct * LtoD * log(M1 / M2) * (1 / 1000);     %km
+PayloadA = Passenger * (WPassenger + WLuggage);
+
+%for point B
+%-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+WLuggage = MTOW - (Wmaxfuel + Wempty + Crew * WCrew + Passenger * WPassenger);
+WLuggage = WLuggage / 8;
+
+%adjust for takeoff and climb fractions
+fuelweight = Wmaxfuel * Takeoff * Climb;
+
+M1 = Wempty + Crew * WCrew + Passenger * (WPassenger + WLuggage) + fuelweight;
+
+%adjust for descent, loiter, and land
+fuelweight = fuelweight - (fuelweight * (1 - Descent) + fuelweight * (1-Loiter) + fuelweight * (1 - Land));
+M2 = M1 - fuelweight;
+RangeB = eta / ct * LtoD * log(M1 / M2) * (1 / 1000);     %km
+PayloadB = Passenger * (WPassenger + WLuggage);
+
+%for point C
+%-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+%adjust for takeoff and climb fractions
+fuelweight = Wmaxfuel * Takeoff * Climb;
+
+M1 = Wempty + Crew * WCrew + fuelweight;
+
+%adjust for descent, loiter, and land
+fuelweight = fuelweight - (fuelweight * (1 - Descent) + fuelweight * (1-Loiter) + fuelweight * (1 - Land));
+M2 = M1 - fuelweight;
+RangeC = eta / ct * LtoD * log(M1 / M2) * (1 / 1000);     %km
+PayloadC = 0;
+
+hold on
+grid on
+
+%plot data on plot
+plot(RangeA,PayloadA,'r*')
+text(RangeA,PayloadA + 60,"full payload")
+plot(RangeB,PayloadB,'r*')
+text(RangeB,PayloadB + 60,"full fuel")
+plot(RangeC,PayloadC,'r*')
+text(RangeC,PayloadC + 60,"no payload")
+
+%create lines to connect points
+plot([0 RangeA], [PayloadA PayloadA],'k')
+plot([RangeA RangeB], [PayloadA PayloadB],'k')
+plot([RangeB RangeC], [PayloadB PayloadC],'k')
+xlim([-300 6000]) 
+ylim([-50 900])
+xline(0);
+yline(0);
+title("Range vs Payload")
+xlabel("Range (km)");
+ylabel("Payload (kg)");
+##### SOURCE END #####
+--></body></html>
