@@ -1,0 +1,19 @@
+Name: Monica Viz
+Date: 02/25/2021
+
+Current Supply Amplitude [A]: 53E-9
+
+Initial Electrode Voltage Data:
+Time to take data [s]: 60
+Sampling Frequency [Hz]: 100
+File Name: Initial_Electrode_Voltage_Data_53nA_Current.txt
+
+Experimental Electrode Voltage Data:
+Time to take data [s]: 2000
+Sampling Frequency [Hz]: 100
+File Name: Experimental_Electrode_Voltage_Data_53nA_Current.txt
+
+Post Experimental Electrode Voltage Data:
+Time to take data [s]: 60
+Sampling Frequency [Hz]: 100
+File Name: Post_Experimental_Electrode_Voltage_Data_53nA_Current.txt

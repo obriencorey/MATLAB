@@ -1,0 +1,19 @@
+Name: Hashim H.
+Date: 11/11/2021
+
+Current Supply Amplitude [A]: 420E-6
+
+Initial Electrode Voltage Data:
+Time to take data [s]: 60
+Sampling Frequency [Hz]: 100
+File Name: Initial_Electrode_Voltage_Data_420uA_Current.txt
+
+Experimental Electrode Voltage Data:
+Time to take data [s]: 140
+Sampling Frequency [Hz]: 100
+File Name: Experimental_Electrode_Voltage_Data_420uA_Current.txt
+
+Post Experimental Electrode Voltage Data:
+Time to take data [s]: 60
+Sampling Frequency [Hz]: 100
+File Name: Post_Experimental_Electrode_Voltage_Data_420uA_Current.txt

@@ -4,7 +4,7 @@ tstop = 25;
 
 timespan = linspace(tstart,tstop,5000);     %generate list of time steps
 
-thetainitial = [pi/6, pi/6, 0, 0];   %initial angles and angular velocities
+thetainitial = [pi/6, -pi/6, 0, 0];   %initial angles and angular velocities
 
 [t,x] = ode45('derivative', timespan, thetainitial);  
 
